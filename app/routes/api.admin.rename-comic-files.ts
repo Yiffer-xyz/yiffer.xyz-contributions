@@ -32,18 +32,15 @@ export async function action(args: ActionFunctionArgs) {
       prefix: `${comicName}/`,
     });
 
-    const promises = [];
     for (const obj of files.objects) {
       if (obj.key.includes(replaceFrom)) {
-        promises.push(renameR2File(r2, obj.key, obj.key.replace(replaceFrom, replaceTo)));
+        await renameR2File(r2, obj.key, obj.key.replace(replaceFrom, replaceTo));
       }
     }
 
-    await Promise.all(promises);
-
     return createSuccessJson();
   } catch (err: any) {
-    return processApiError('Error in /list-comic-files', err, { comicName });
+    return processApiError('Error in /rename-comic-files', err, { comicName });
   }
 }
 
