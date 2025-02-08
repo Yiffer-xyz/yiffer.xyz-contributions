@@ -23,24 +23,13 @@ export async function action(args: ActionFunctionArgs) {
     const files = await r2.list({
       prefix: `${comicName}/`,
     });
-    const files2 = await r2.list({
-      prefix: `${comicName}`,
-    });
 
-    const files1Json = JSON.stringify(files);
-    const files2Json = JSON.stringify(files2);
-
-    const obj1 = files.objects.map(o => ({
-      key: o.key,
+    const fileObjects = files.objects.map(o => ({
+      key: o.key.replace(`${comicName}/`, ''),
       size: o.size,
     }));
 
-    const obj2 = files2.objects.map(o => ({
-      key: o.key,
-      size: o.size,
-    }));
-
-    return createSuccessJson({ files1Json, files2Json, obj1, obj2 });
+    return createSuccessJson(fileObjects);
   } catch (err: any) {
     return processApiError('Error in /list-comic-files', err, { comicName });
   }
