@@ -32,11 +32,19 @@ export async function action(args: ActionFunctionArgs) {
       prefix: `${comicName}/`,
     });
 
+    let promises: Promise<void>[] = [];
+    let counter = 0;
     for (const obj of files.objects) {
       if (obj.key.includes(replaceFrom)) {
-        await renameR2File(r2, obj.key, obj.key.replace(replaceFrom, replaceTo));
+        promises.push(renameR2File(r2, obj.key, obj.key.replace(replaceFrom, replaceTo)));
+      }
+      counter++;
+      if (counter % 3 === 0) {
+        await Promise.all(promises);
+        promises = [];
       }
     }
+    await Promise.all(promises);
 
     return createSuccessJson();
   } catch (err: any) {

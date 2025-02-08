@@ -85,7 +85,7 @@ export default function ComicFileManager({
                 startIcon={FaPen}
               />
               <Button
-                text="Select files to delete (coming)"
+                text="Select files to delete (coming soon)"
                 variant="outlined"
                 color="error"
                 disabled

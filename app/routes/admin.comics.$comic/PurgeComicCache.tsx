@@ -18,6 +18,7 @@ export default function PurgeComicCache({
   const [isLoading, setIsLoading] = useState(false);
 
   async function onSubmit() {
+    setIsLoading(true);
     const res = await fetch(`${imagesServerUrl}/purge-comic-cache`, {
       body: JSON.stringify({ comicName: comic.name, numberOfPages: comic.numberOfPages }),
       method: 'post',
